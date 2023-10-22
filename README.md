@@ -1,0 +1,2 @@
+# GuidLibrary
+Guid C++ Library
