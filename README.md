@@ -1,2 +1,2 @@
 # GuidLibrary
-Guid C++ Library
+Cross-platform C++ GUID lib based on std::chrono
