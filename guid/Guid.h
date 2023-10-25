@@ -13,17 +13,24 @@ namespace customShark
 {
     class Guid {
     private:
-        int _data1;
-        short int _data2;
-        short int _data3;
-        short int _data4;
-        char _data5[12];
+        int _data1 = 0;
+        short int _data2 = 0;
+        short int _data3 = 0;
+        short int _data4 = 0;
+        char _data5[12] = "00000000000";
 
         template<typename T>
         static std::string value_to_hex_str(T value);
+        template<typename T>
+        static T hex_string_to_value(std::string str);
+        void uuid_to_guid(std::string str);
+
+        void remove_symbol(std::string str, const char symbol);
+        void remove_redundant_symbols(std::string str);
     public:
-        Guid() {};
-        ~Guid() {};
+        Guid();
+        Guid(std::string uid);
+        ~Guid();
 
         static Guid new_guid();
         const std::string to_string();

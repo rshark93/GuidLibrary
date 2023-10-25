@@ -11,6 +11,9 @@ using namespace customShark;
 
 int main(int argc, char** argv)
 {
+    auto g = new Guid("6B29FC40-CA47-1067-B31D-00DD010662DA");
+    std::cout << g->to_string() << std::endl;
+
     auto mp = std::map<Guid, int>();
     auto vc = std::vector<std::pair<Guid, int>>();
 

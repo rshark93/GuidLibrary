@@ -9,7 +9,15 @@
 #include <string>
 #include <type_traits>
 
- customShark::Guid customShark::Guid::new_guid() {
+customShark::Guid::Guid() {}
+
+customShark::Guid::Guid(std::string uid) {
+    uuid_to_guid(uid);
+}
+
+customShark::Guid::~Guid() {}
+
+customShark::Guid customShark::Guid::new_guid() {
     auto guid = Guid();
 
     const auto time_now = std::chrono::system_clock::now();
@@ -53,4 +61,62 @@ std::string customShark::Guid::value_to_hex_str(T value) {
     }
 
     return str;
+}
+
+template<typename T>
+T customShark::Guid::hex_string_to_value(std::string str) {
+    unsigned int x;
+    std::stringstream ss;
+    ss << std::hex << str;
+    ss >> x;
+
+    switch(str.size()) {
+        case 6 ... 8: return static_cast<int>(x);
+        case 2 ... 4: return static_cast<short int>(x);
+    }
+
+    return 0;
+}
+
+void customShark::Guid::uuid_to_guid(std::string str) {
+    remove_redundant_symbols(str);
+
+    auto n = str.find('-');
+    if ( n != std::string::npos ) {
+        _data1 = hex_string_to_value<int>(str.substr(0, n));
+        str.erase(str.begin() + 0, str.begin() + n + 1);
+
+        n = str.find('-');
+        if ( n != std::string::npos ) {
+            _data2 = hex_string_to_value<short int>(str.substr(0, n));
+            str.erase(str.begin() + 0, str.begin() + n + 1);
+
+            n = str.find('-');
+            if ( n != std::string::npos ) {
+                _data3 = hex_string_to_value<short int>(str.substr(0, n));
+                str.erase(str.begin() + 0, str.begin() + n + 1);
+
+                n = str.find('-');
+                if ( n != std::string::npos ) {
+                    _data4 = hex_string_to_value<short int>(str.substr(0, n));
+                    str.erase(str.begin() + 0, str.begin() + n + 1);
+
+                    std::strcpy(_data5, str.c_str());
+                }
+            }
+        }
+    }
+}
+
+void customShark::Guid::remove_redundant_symbols(std::string str) {
+    remove_symbol(str, '\n');
+    remove_symbol(str, '\t');
+    remove_symbol(str, '{');
+    remove_symbol(str, '}');
+    remove_symbol(str, ' ');
+}
+
+void customShark::Guid::remove_symbol(std::string str, const char symbol) {
+    if (str.find(symbol))
+        str.erase(std::remove(str.begin(), str.end(), symbol), str.end());
 }
