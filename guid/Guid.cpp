@@ -70,12 +70,7 @@ T customShark::Guid::hex_string_to_value(std::string str) {
     ss << std::hex << str;
     ss >> x;
 
-    switch(str.size()) {
-        case 6 ... 8: return static_cast<int>(x);
-        case 2 ... 4: return static_cast<short int>(x);
-    }
-
-    return 0;
+    return static_cast<T>(x);
 }
 
 void customShark::Guid::uuid_to_guid(std::string str) {
