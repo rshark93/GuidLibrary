@@ -41,8 +41,8 @@ namespace customShark
         }
 
         bool operator != (const Guid& guid) const {
-            return this->_data1 != guid._data1 && this->_data2 != guid._data2 && this->_data3 != guid._data4
-                && this->_data4 != guid._data4 && (std::strcmp(this->_data5, guid._data5) != 0);
+            return this->_data1 != guid._data1 || this->_data2 != guid._data2 || this->_data3 != guid._data4
+                || this->_data4 != guid._data4 || (std::strcmp(this->_data5, guid._data5) != 0);
         }
 
         bool operator < (const Guid& guid) const {
